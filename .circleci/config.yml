@@ -59,36 +59,21 @@ jobs:
       - deploy:
           name: Push image for i386 to dockerhub
           command: make ARCHITECTURES=i386 push
-  build_arm32v5:
+  build_arm32v6:
     <<: *defaults
     steps:
       - checkout
       - *restore_docker_cache
       - *load_image_from_cache
       - run:
-          name: Build image for arm32v5
-          command: make ARCHITECTURES=arm32v5
+          name: Build image for arm32v6
+          command: make ARCHITECTURES=arm32v6
       - run:
-          name: Test image for arm32v5
-          command: make ARCHITECTURES=arm32v5 test
+          name: Test image for arm32v6
+          command: make ARCHITECTURES=arm32v6 test
       - deploy:
-          name: Push image for arm32v5 to dockerhub
-          command: make ARCHITECTURES=arm32v5 push
-  build_arm32v7:
-    <<: *defaults
-    steps:
-      - checkout
-      - *restore_docker_cache
-      - *load_image_from_cache
-      - run:
-          name: Build image for arm32v7
-          command: make ARCHITECTURES=arm32v7
-      - run:
-          name: Test image for arm32v7
-          command: make ARCHITECTURES=arm32v7 test
-      - deploy:
-          name: Push image for arm32v7 to dockerhub
-          command: make ARCHITECTURES=arm32v7 push
+          name: Push image for arm32v6 to dockerhub
+          command: make ARCHITECTURES=arm32v6 push
   build_arm64v8:
       <<: *defaults
       steps:
@@ -139,9 +124,7 @@ workflows:
           <<: *requires_compile_and_tag
       - build_i386:
           <<: *requires_compile_and_tag
-      - build_arm32v5:
-          <<: *requires_compile_and_tag
-      - build_arm32v7:
+      - build_arm32v6:
           <<: *requires_compile_and_tag
       - build_arm64v8:
           <<: *requires_compile_and_tag
@@ -149,8 +132,7 @@ workflows:
           requires:
             - build_amd64
             - build_i386
-            - build_arm32v5
-            - build_arm32v7
+            - build_arm32v6
             - build_arm64v8
           <<: *tag_filter
 #      - badge:
