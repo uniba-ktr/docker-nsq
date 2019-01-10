@@ -1,5 +1,5 @@
-ARCHITECTURES = amd64 i386 arm32v5 arm32v7 arm64v8
-IMAGE_TARGET = debian:buster-slim
+ARCHITECTURES = amd64 i386 arm32v6 arm64v8
+IMAGE_TARGET = alpine
 BUILD_BASE = base
 MULTIARCH = multiarch/qemu-user-static:register
 QEMU_VERSION = v2.11.0
@@ -65,20 +65,12 @@ manifest:
 test:
 	@docker network create -d bridge trial
 	@$(foreach arch,$(ARCHITECTURES), docker run \
-			--volume=/:/rootfs:ro \
-			--volume=/var/run:/var/run:rw \
-			--volume=/sys:/sys:ro \
-			--volume=/var/lib/docker/:/var/lib/docker:ro \
-			--volume=/dev/disk/:/dev/disk:ro \
-			--publish=8080:8080 \
 			--detach=true \
-			--name=cadvisor \
+			--name=nsq \
 			$(REPO):linux-$(arch)-$(TAG); \
 			sleep 10; \
-			docker run --network trial \
-				jwilder/dockerize dockerize -wait tcp://cadvisor:8080 -timeout 300s; \
-			curl -sSL --retry 10 --retry-delay 5 localhost:8080 | grep cAdvisor; \
-			docker rm -f cadvisor;)
+			docker ps | grep nsq; \
+			docker rm -f nsq;)
 	@docker network rm trial
 
 clean:

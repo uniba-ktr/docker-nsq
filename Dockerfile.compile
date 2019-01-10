@@ -1,7 +1,7 @@
 FROM karalabe/xgo-latest AS build
 ARG VERSION=master
 ARG TARGETS=linux/386,linux/amd64,linux/arm-5,linux/arm-6,linux/arm-7,linux/arm64
-
+ENV CGO_ENABLED=0
 RUN wget -O /usr/bin/dep https://github.com/golang/dep/releases/download/v0.3.2/dep-linux-amd64 && chmod +x /usr/bin/dep
 WORKDIR ${GOPATH}/src/github.com/nsqio
 RUN git clone --branch ${VERSION} https://github.com/nsqio/nsq

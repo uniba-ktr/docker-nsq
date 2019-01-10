@@ -20,10 +20,22 @@ ARG VCS_REF
 ARG VCS_URL
 ENV DEBIAN_FRONTEND noninteractive
 
-COPY --from=qemu /build/nsqd-linux-${NSQ_ARCH} /usr/bin/nsqd
+COPY --from=qemu /build/nsqd-linux-${NSQ_ARCH} /usr/local/bin/nsqd
+COPY --from=qemu /build/nsqlookupd-linux-${NSQ_ARCH} /usr/local/bin/nsqlookupd
+COPY --from=qemu /build/nsqadmin-linux-${NSQ_ARCH} /usr/local/bin/nsqadmin
+COPY --from=qemu /build/nsq_to_nsq-linux-${NSQ_ARCH} /usr/local/bin/nsq_to_nsq
+COPY --from=qemu /build/nsq_to_file-linux-${NSQ_ARCH} /usr/local/bin/nsq_to_file
+COPY --from=qemu /build/nsq_to_http-linux-${NSQ_ARCH} /usr/local/bin/nsq_to_http
+COPY --from=qemu /build/nsq_tail-linux-${NSQ_ARCH} /usr/local/bin/nsq_tail
+COPY --from=qemu /build/nsq_stat-linux-${NSQ_ARCH} /usr/local/bin/nsq_stat
+COPY --from=qemu /build/to_nsq-linux-${NSQ_ARCH} /usr/local/bin/to_nsq
+
+RUN apk add -U --no-cache libc6-compat && \
+    ln -s /usr/local/bin/*nsq* / && \
+    ln -s /usr/local/bin/*nsq* /bin/
 
 EXPOSE 4150 4151 4160 4161 4170 4171
-ENTRYPOINT ["/usr/bin/nsqd"]
+#ENTRYPOINT ["/usr/bin/nsqd"]
 LABEL de.uniba.ktr.nsq.version=$VERSION \
       de.uniba.ktr.nsq.name="NSQ" \
       de.uniba.ktr.nsq.docker.cmd="docker run --name=nsq unibaktr/nsq" \
