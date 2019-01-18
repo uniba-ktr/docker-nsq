@@ -7,15 +7,15 @@ WORKDIR ${GOPATH}/src/github.com/nsqio
 RUN git clone --branch ${VERSION} https://github.com/nsqio/nsq
 WORKDIR ${GOPATH}/src/github.com/nsqio/nsq
 RUN dep ensure
-RUN xgo -ldflags="-s -w" --targets=${TARGETS} github.com/nsqio/nsq/apps/nsqd
-RUN xgo -ldflags="-s -w" --targets=${TARGETS} github.com/nsqio/nsq/apps/nsqlookupd
-RUN xgo -ldflags="-s -w" --targets=${TARGETS} github.com/nsqio/nsq/apps/nsqadmin
-RUN xgo -ldflags="-s -w" --targets=${TARGETS} github.com/nsqio/nsq/apps/nsq_to_nsq
-RUN xgo -ldflags="-s -w" --targets=${TARGETS} github.com/nsqio/nsq/apps/nsq_to_file
-RUN xgo -ldflags="-s -w" --targets=${TARGETS} github.com/nsqio/nsq/apps/nsq_to_http
-RUN xgo -ldflags="-s -w" --targets=${TARGETS} github.com/nsqio/nsq/apps/nsq_tail
-RUN xgo -ldflags="-s -w" --targets=${TARGETS} github.com/nsqio/nsq/apps/nsq_stat
-RUN xgo -ldflags="-s -w" --targets=${TARGETS} github.com/nsqio/nsq/apps/to_nsq
+RUN xgo -ldflags="-s -extldflags '-static' -w" --targets=${TARGETS} github.com/nsqio/nsq/apps/nsqd
+RUN xgo -ldflags="-s -extldflags '-static' -w" --targets=${TARGETS} github.com/nsqio/nsq/apps/nsqlookupd
+RUN xgo -ldflags="-s -extldflags '-static' -w" --targets=${TARGETS} github.com/nsqio/nsq/apps/nsqadmin
+RUN xgo -ldflags="-s -extldflags '-static' -w" --targets=${TARGETS} github.com/nsqio/nsq/apps/nsq_to_nsq
+RUN xgo -ldflags="-s -extldflags '-static' -w" --targets=${TARGETS} github.com/nsqio/nsq/apps/nsq_to_file
+RUN xgo -ldflags="-s -extldflags '-static' -w" --targets=${TARGETS} github.com/nsqio/nsq/apps/nsq_to_http
+RUN xgo -ldflags="-s -extldflags '-static' -w" --targets=${TARGETS} github.com/nsqio/nsq/apps/nsq_tail
+RUN xgo -ldflags="-s -extldflags '-static' -w" --targets=${TARGETS} github.com/nsqio/nsq/apps/nsq_stat
+RUN xgo -ldflags="-s -extldflags '-static' -w" --targets=${TARGETS} github.com/nsqio/nsq/apps/to_nsq
 
 FROM alpine:3.7
 
