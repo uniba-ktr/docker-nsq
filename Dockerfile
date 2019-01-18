@@ -31,6 +31,7 @@ COPY --from=qemu /build/nsq_stat-linux-${NSQ_ARCH} /usr/local/bin/nsq_stat
 COPY --from=qemu /build/to_nsq-linux-${NSQ_ARCH} /usr/local/bin/to_nsq
 
 RUN apk add -U --no-cache libc6-compat && \
+    ln -s /lib/ld-linux-* /lib/ld-linux.so.3 && \
     ln -s /usr/local/bin/*nsq* / && \
     ln -s /usr/local/bin/*nsq* /bin/
 
